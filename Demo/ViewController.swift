@@ -17,8 +17,8 @@ class ViewController: UIViewController {
 	var channel_1: Channel<Int,NoError>?
 	var channel_2: Channel<Int,NoError>?
 
-	var timer_1 : Repeat?
-	var timer_2 : Repeat?
+	var timer_1 : Repeater?
+	var timer_2 : Repeater?
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -27,7 +27,7 @@ class ViewController: UIViewController {
 		var count_2: Int = 0
 	
 		self.channel_1 = Channel({ producer in
-			self.timer_1 = Repeat.every(.seconds(1), { _ in
+			self.timer_1 = Repeater.every(.seconds(1), { _ in
 				count_1 += 1
 				producer.send(value: count_1)
 				if count_1 == 5 {
@@ -39,7 +39,7 @@ class ViewController: UIViewController {
 		})
 		
 		self.channel_2 = Channel({ producer in
-			self.timer_2 = Repeat.every(.seconds(1), { _ in
+			self.timer_2 = Repeater.every(.seconds(1), { _ in
 				count_2 += 1
 				producer.send(value: count_2)
 				if count_2 == 5 {

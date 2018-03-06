@@ -46,6 +46,10 @@ public class ReplaySubject<V,E: Swift.Error>: Subject<V,E> {
 		super.send(event)
 	}
 	
+	/// Add a new observer of the subject.
+	///
+	/// - Parameter callback: callback to call on a new event.
+	/// - Returns: disposable used to dispose the subscription.
 	public override func subscribe(_ callback: @escaping ((Event<V, E>) -> (Void))) -> DisposableProtocol {
 		// replay all buffered events to the new subscriber
 		self.items.forEach { callback($0) }

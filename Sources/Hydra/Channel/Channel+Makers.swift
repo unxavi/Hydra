@@ -73,13 +73,13 @@ public extension Channel {
 	///   - generator: callback called each interval to produce a new value. Input parameter is the iteration count.
 	///   - queue: queue in which execute the the timer. If `nil` a newly queue is created.
 	/// - Returns: channel
-	public static func every(interval: Repeat.Interval,
+	public static func every(interval: Repeater.Interval,
 							 generator: @escaping ((_ iteration: Int) -> (Value)),
 							 queue: DispatchQueue? = nil) -> Channel<Value,Error> {
 		return Channel({ producer in
 			var iteration: Int = 0
 			
-			let timer = Repeat(interval: interval, mode: .infinite, queue: queue, observer: { _ in
+			let timer = Repeater(interval: interval, mode: .infinite, queue: queue, observer: { _ in
 				let value = generator(iteration)
 				producer.send(.next(value))
 				iteration += 1
@@ -100,9 +100,9 @@ public extension Channel {
 	///   - value: value to generate.
 	///   - queue: queue in which execute the the timer. If `nil` a newly queue is created.
 	/// - Returns: channel
-	public static func after(interval: Repeat.Interval, value: Value, queue: DispatchQueue? = nil) -> Channel<Value,Error> {
+	public static func after(interval: Repeater.Interval, value: Value, queue: DispatchQueue? = nil) -> Channel<Value,Error> {
 		return Channel({ producer in
-			let timer = Repeat.once(after: interval, { _ in
+			let timer = Repeater.once(after: interval, { _ in
 				producer.send(.next(value))
 			})
 			timer.start()
