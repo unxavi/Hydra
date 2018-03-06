@@ -12,6 +12,9 @@ import Foundation
 /// dispatch events received to the list of all subscriber callbacks).
 public protocol SubjectProtocol: ChannelProtocol, SubscriberProtocol { }
 
+/// Subject class act as a channel where you can put new events from the outside
+/// by calling `send()` function, and as a subscriber with multiple observer because,
+/// for each event, it will be dispatched to the all remainings.
 public class Subject<V, E: Swift.Error>: SubjectProtocol {
 	public typealias Token = UInt64
 	public typealias Value = V

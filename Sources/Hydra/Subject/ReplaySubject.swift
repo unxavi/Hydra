@@ -8,6 +8,10 @@
 
 import Foundation
 
+/// ReplaySubject is like a Subject but allows you to keep a buffer
+/// of given size where all # latest events are stored.
+/// Moreover, when a new subscriber will be added to the list, it will
+/// receive the entire buffer's size.
 public class ReplaySubject<V,E: Swift.Error>: Subject<V,E> {
 	
 	/// This is the buffer where buffered events are stored.
