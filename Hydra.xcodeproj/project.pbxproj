@@ -18,6 +18,11 @@
 		642AC866204714C700CD66ED /* Subject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 642AC8622047143000CD66ED /* Subject.swift */; };
 		642AC867204714C700CD66ED /* Subject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 642AC8622047143000CD66ED /* Subject.swift */; };
 		642AC868204714C800CD66ED /* Subject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 642AC8622047143000CD66ED /* Subject.swift */; };
+		6494C743204F23DA00217EEF /* ReplaySubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6494C742204F23DA00217EEF /* ReplaySubject.swift */; };
+		6494C744204F23DA00217EEF /* ReplaySubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6494C742204F23DA00217EEF /* ReplaySubject.swift */; };
+		6494C745204F23DA00217EEF /* ReplaySubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6494C742204F23DA00217EEF /* ReplaySubject.swift */; };
+		6494C746204F23DA00217EEF /* ReplaySubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6494C742204F23DA00217EEF /* ReplaySubject.swift */; };
+		6494C747204F336500217EEF /* ReplaySubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6494C742204F23DA00217EEF /* ReplaySubject.swift */; };
 		6499869520458B500042EE10 /* Channel+Filters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6499869420458B500042EE10 /* Channel+Filters.swift */; };
 		6499869620458C0C0042EE10 /* Channel+Filters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6499869420458B500042EE10 /* Channel+Filters.swift */; };
 		6499869720458C0D0042EE10 /* Channel+Filters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6499869420458B500042EE10 /* Channel+Filters.swift */; };
@@ -121,6 +126,7 @@
 		52D6DA0F1BF000BD002C0205 /* Hydra.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Hydra.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		642729BD2046CA1E008CC55E /* Channel+Channels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Channel+Channels.swift"; sourceTree = "<group>"; };
 		642AC8622047143000CD66ED /* Subject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Subject.swift; sourceTree = "<group>"; };
+		6494C742204F23DA00217EEF /* ReplaySubject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplaySubject.swift; sourceTree = "<group>"; };
 		6499869420458B500042EE10 /* Channel+Filters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Channel+Filters.swift"; sourceTree = "<group>"; };
 		6499869A20458E690042EE10 /* Dispatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dispatch.swift; sourceTree = "<group>"; };
 		649986A02045A9940042EE10 /* OptionalProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalProtocol.swift; sourceTree = "<group>"; };
@@ -275,6 +281,7 @@
 			isa = PBXGroup;
 			children = (
 				642AC8622047143000CD66ED /* Subject.swift */,
+				6494C742204F23DA00217EEF /* ReplaySubject.swift */,
 			);
 			path = Subject;
 			sourceTree = "<group>";
@@ -653,6 +660,7 @@
 				64E969442044B29100AFBA01 /* Repeat.swift in Sources */,
 				64E978AA2043F4FA00776F9A /* Event.swift in Sources */,
 				642AC8632047143000CD66ED /* Subject.swift in Sources */,
+				6494C743204F23DA00217EEF /* ReplaySubject.swift in Sources */,
 				64E9694A2044B89300AFBA01 /* Channel+Transforms.swift in Sources */,
 				64E978B02043F66D00776F9A /* Channel.swift in Sources */,
 				642729BE2046CA1E008CC55E /* Channel+Channels.swift in Sources */,
@@ -682,6 +690,7 @@
 				64E969462044B29100AFBA01 /* Repeat.swift in Sources */,
 				64E978AC2043F4FA00776F9A /* Event.swift in Sources */,
 				642AC866204714C700CD66ED /* Subject.swift in Sources */,
+				6494C745204F23DA00217EEF /* ReplaySubject.swift in Sources */,
 				64E9694C2044B89300AFBA01 /* Channel+Transforms.swift in Sources */,
 				64E978B22043F66D00776F9A /* Channel.swift in Sources */,
 				642729C02046DF1B008CC55E /* Channel+Channels.swift in Sources */,
@@ -703,6 +712,7 @@
 				64E969472044B29100AFBA01 /* Repeat.swift in Sources */,
 				64E978AD2043F4FA00776F9A /* Event.swift in Sources */,
 				642AC867204714C700CD66ED /* Subject.swift in Sources */,
+				6494C746204F23DA00217EEF /* ReplaySubject.swift in Sources */,
 				64E9694D2044B89300AFBA01 /* Channel+Transforms.swift in Sources */,
 				64E978B32043F66D00776F9A /* Channel.swift in Sources */,
 				642729C12046DF1C008CC55E /* Channel+Channels.swift in Sources */,
@@ -724,6 +734,7 @@
 				64E969452044B29100AFBA01 /* Repeat.swift in Sources */,
 				64E978AB2043F4FA00776F9A /* Event.swift in Sources */,
 				642AC865204714C700CD66ED /* Subject.swift in Sources */,
+				6494C744204F23DA00217EEF /* ReplaySubject.swift in Sources */,
 				64E9694B2044B89300AFBA01 /* Channel+Transforms.swift in Sources */,
 				64E978B12043F66D00776F9A /* Channel.swift in Sources */,
 				642729BF2046DF1B008CC55E /* Channel+Channels.swift in Sources */,
@@ -753,6 +764,7 @@
 				642729C22046DF1C008CC55E /* Channel+Channels.swift in Sources */,
 				64E9694E2044B89300AFBA01 /* Channel+Transforms.swift in Sources */,
 				64E969422044AD3900AFBA01 /* Channel+Makers.swift in Sources */,
+				6494C747204F336500217EEF /* ReplaySubject.swift in Sources */,
 				64E978C62043F91A00776F9A /* Mutex.swift in Sources */,
 				6499869F20458EAE0042EE10 /* Dispatch.swift in Sources */,
 				64E978AE2043F4FA00776F9A /* Event.swift in Sources */,
