@@ -23,7 +23,7 @@ public enum Event<Value, Error: Swift.Error> {
 		return e
 	}
 	
-	public var isTerminal: Bool {
+	public var isFinal: Bool {
 		switch self {
 		case .error(_), .finished:	return true
 		case .next(_):				return false

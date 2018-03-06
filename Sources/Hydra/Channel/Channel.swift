@@ -98,6 +98,7 @@ public struct Channel<V, E: Swift.Error>: ChannelProtocol {
 	///
 	/// - Parameter callback: callback to register
 	/// - Returns: a disposable you can use to dispose subscription registration.
+	@discardableResult
 	public func subscribe(_ callback: @escaping ((Event<Channel<V, E>.Value, Channel<V, E>.Error>) -> (Void))) -> DisposableProtocol {
 		// Create a new subscriber for this callback.
 		// Subscriber manage the amocity dispatch of the events.

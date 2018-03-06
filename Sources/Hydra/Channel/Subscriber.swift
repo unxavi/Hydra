@@ -8,10 +8,18 @@
 
 import Foundation
 
+/// Subscriber is the typealias for a function callback called to observe
+/// new events received from a Channel.
 public typealias Subscriber<Value, Error: Swift.Error> = ((Event<Value, Error>) -> (Void))
 
+/// Subscriber protocol is a protocol used to define an entity which can observe
+/// events produced by a Channel.
 public protocol SubscriberProtocol {
+	
+	// Value produced by the subscriber
 	associatedtype Value
+	
+	// Error produced by the subscriber
 	associatedtype Error: Swift.Error
 	
 	/// Send an event to an observer.
@@ -48,30 +56,55 @@ public extension SubscriberProtocol {
 	
 }
 
+/// SafeSubsciber is used to provide a thread safe subscriber manager for Channel.
+/// It receives messages from Channel's producer and dispatch to the subscriber callback
+/// keeping the stuff thread safe.
+/// A Channel can have one and one only subscriber (and a single producer too).
+/// Overriding a subscriber of a Channel is a way to restart the producer (and remove
+/// previosly set subscriber)
 public class SafeSubscriber<V, E: Swift.Error>: SubscriberProtocol {
+	
+	/// Value produced to the subscriber
 	public typealias Value = V
+	
+	/// Error produced to the subscriber
 	public typealias Error = E
 	
+	/// it keeps the event dispatching thread safe
 	private let mutex: Mutex = Mutex()
+	
+	/// Subscriber callback
 	private var subscriber: Subscriber<V,E>? = nil
+	
+	/// Disposable of the subscriber
 	public private(set) var disposable: Disposable!
 	
-	internal(set) var linkedDisposable: DisposableProtocol?
+	/// Optional linked disposable
+	internal(set) var linked: DisposableProtocol?
 	
+	/// Initialize a new instance with given subscriber callback.
+	///
+	/// - Parameter subscriber: subscriber callbak
 	public init(subscriber: @escaping Subscriber<V,E>) {
 		self.subscriber = subscriber
-		self.linkedDisposable = disposable
+		self.linked = disposable
 		self.disposable = Disposable(onDispose: { [weak self] in
 			self?.subscriber = nil
-			self?.linkedDisposable?.dispose()
+			self?.linked?.dispose()
 		})
 	}
 	
+	/// Dispatch event to the subscriber.
+	/// This function is thread safe; events are dispatched in the same order
+	/// they are received.
+	///
+	/// - Parameter event: event to dispatch
 	public func send(_ event: Event<V, E>) {
 		self.mutex.sync {
 			guard let s = self.subscriber else { return }
 			s(event)
-			if event.isTerminal {
+			// once a final event is received we want to dispose the subscriber's disposable too
+			if event.isFinal {
 				self.disposable.dispose()
 			}
 		}

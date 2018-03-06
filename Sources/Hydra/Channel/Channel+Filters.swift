@@ -129,7 +129,6 @@ public extension ChannelProtocol {
 		})
 	}
 	
-	
 	/// Create a channel which filters all events received from `self` using a filter callback.
 	/// If filter callback return `false` events is not dispatched thought the graph.
 	///
@@ -162,7 +161,7 @@ public extension ChannelProtocol {
 			
 			return self.subscribe({ event in
 				// We want to ignore all `.next` events and dispatch only terminal events.
-				guard event.isTerminal else { return }
+				guard event.isFinal else { return }
 				producer.send(event)
 			})
 			
@@ -182,6 +181,27 @@ public extension ChannelProtocol {
 				producer.send(value: value)
 			})
 			
+		})
+	}
+	
+	/// Skip all events received from `self` channel for a given interval of time.
+	/// NOTE: Both `.finished` and `.error` are dispatched normally without filter.
+	///
+	/// - Parameter interval: interval of silence.
+	/// - Returns: channel
+	public func skipInterval(_ interval: Double) -> Channel<Value,Error> {
+		return Channel({ producer in
+			let endOfSkip = Date().addingTimeInterval(interval)
+			return self.subscribe({ event in
+				switch event {
+				case .next(let value):
+					// If not enough time is passed we will skip the dispatch of the event
+					guard Date() > endOfSkip else { return }
+					producer.send(value: value)
+				default:
+					producer.send(event)
+				}
+			})
 		})
 	}
 	
@@ -224,9 +244,9 @@ public extension ChannelProtocol {
 	
 	/// Create a channel to dispatch only the last `count` values emitted by `self` channel.
 	///
-	/// - Parameter count: number of latest item to keep
+	/// - Parameter count: number of latest item to keep, if not passed `1` is used
 	/// - Returns: channel
-	public func last(_ count: Int) -> Channel<Value,Error> {
+	public func last(_ count: Int = 1) -> Channel<Value,Error> {
 		return Channel({ producer in
 			
 			guard count > 0 else { // invalid buffer's size
@@ -379,7 +399,74 @@ public extension ChannelProtocol {
 			})
 		})
 	}
-
+	
+	/// Create a channel which waits for a given interval of time waiting for new events.
+	/// If no events occours in this inverval specified `error` is generated.
+	///
+	/// - Parameters:
+	///   - interval: interval to wait before emitting a timeout error.
+	///   - error: error to produce when timeout occours.
+	///   - queue: queue in which execute the timeout timer, pass `nil` to create a new custom one automatically.
+	/// - Returns: channel
+	public func timeout(_ interval: Double, error: Error, queue: DispatchQueue? = nil) -> Channel<Value, Error> {
+		return Channel({ producer in
+			
+			var isFinished: Bool = false
+			let q = (queue ?? DispatchQueue(label: "com.timeout.hydra"))
+			// Create a timer and
+			let timer = q.after(interval, {
+				guard isFinished == false else { return }
+				producer.send(error: error)
+			})
+			
+			let disposable = self.subscribe({ event in
+				producer.send(event)
+				isFinished = event.isFinal
+				timer.dispose()
+			})
+			
+			return disposable
+		})
+	}
+	
+	
+	/// Create a channel which emits given event if `self` channel completes without
+	/// producing any `.next` event.
+	/// NOTE: You must no return any `.finished` event, only `.next` and `.error` events are allowed.
+	///       Channel will end with a `.finished` automatically.
+	///
+	/// - Parameter event: event to produce if no events are received before completion.
+	///                    Only `.next` and `.error` events are allowed (otherwise no action are performed)
+	/// - Returns: channel
+	public func fallback(_ event: Event<Value,Error>) -> Channel<Value,Error> {
+		
+		// we don't permit finished event.
+		// In this case we'll return the same `self` channel and ignore the entire operation.
+		guard case .finished = event else {
+			return self.asChannel()
+		}
+		
+		return Channel({ producer in
+			
+			var hasProducedEvents: Bool = false
+			return self.subscribe({ event in
+				switch event {
+				case .next(let value):
+					hasProducedEvents = true
+					producer.send(value: value)
+				case .error(let error):
+					producer.send(error: error)
+				case .finished:
+					if hasProducedEvents == false {
+						producer.send(event)
+					}
+					producer.complete()
+				}
+			})
+			
+		})
+	}
+	
 }
 
 public extension ChannelProtocol where Value: Equatable {

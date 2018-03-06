@@ -10,6 +10,68 @@ import Foundation
 
 public extension ChannelProtocol {
 	
+	/// Create a channel which start with given value then start forwarding `self` events.
+	///
+	/// - Parameter value: initial value to dispatch
+	/// - Returns: channel
+	public func start(with value: Value) -> Channel<Value,Error> {
+		return Channel({ producer in
+			producer.send(value: value)
+			return self.subscribe({ event in
+				producer.send(event)
+			})
+		})
+	}
+	
+	
+	/// Create a channel which, before receiving the last terminal message (`.finished`)
+	/// dispatch given value.
+	///
+	/// - Parameter value: value to pass before `.finished` event.
+	/// - Returns: channel
+	public func end(with value: Value) -> Channel<Value,Error> {
+		return Channel({ producer in
+			return self.subscribe({ event in
+				switch event {
+				case .finished:
+					producer.send(value: value) // dispatch our custom value...
+					producer.complete() // ... then complete
+				default:
+					producer.send(event)
+				}
+			})
+		})
+	}
+	
+	/// Apply reduce function to an initial value by passing to it the current value emitted by the channel.
+	///
+	/// - Parameters:
+	///   - initial: initial value of the output you want to produce.
+	///   - reduce: reduction function; will receive both the current state of the reduced value and the current value recevied on event.
+	/// - Returns: channel
+	public func reduce<NewValue>(_ initial: NewValue, _ reduce: @escaping ((_ reduced: NewValue, _ current: Value) -> (NewValue))) -> Channel<NewValue,Error> {
+		return Channel<NewValue,Error>({ producer in
+			
+			var accumulatedValue: NewValue = initial
+			
+			return self.subscribe({ event in
+				switch event {
+				case .next(let value):
+					// only accumulation function is called
+					accumulatedValue = reduce(accumulatedValue, value)
+				case .error(let error):
+					producer.send(error: error)
+				case .finished:
+					// when `self` send a terminal event we want to dispatch
+					// our accumulated event before...
+					producer.send(value: accumulatedValue)
+					// ...then ends
+					producer.send(.finished)
+				}
+			})
+		})
+	}
+	
 	/// Transform current channel to a channel which dispatch an array of values only
 	/// when enough values are accumulated.
 	///
@@ -171,7 +233,7 @@ public extension ChannelProtocol {
 	///   - initial: initial value
 	///   - combine: combine function; it will receive partial accumulated value and new emitted value, to return a new value
 	/// - Returns: new channel
-	public func scan<NewValue>(_ initial: NewValue, _ combine: @escaping ((NewValue, Value) -> (NewValue))) -> Channel<NewValue, Error> {
+	public func combine<NewValue>(_ initial: NewValue, _ combine: @escaping ((NewValue, Value) -> (NewValue))) -> Channel<NewValue, Error> {
 		return Channel<NewValue,Error>({ producer in
 			
 			var accumulatedValue: NewValue = initial
@@ -263,6 +325,16 @@ public extension ChannelProtocol {
 				}
 			})
 			
+		})
+	}
+	
+	/// Create a channel which groups all values emitted by `self` in a single array
+	/// dispatched when it finish.
+	///
+	/// - Returns: channel
+	public func group() -> Channel<[Value],Error> {
+		return self.combine([], { (list, new) in
+			list + [new]
 		})
 	}
 	

@@ -8,6 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		52D6D9871BEFF229002C0205 /* Hydra.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52D6D97C1BEFF229002C0205 /* Hydra.framework */; };
+		642729BE2046CA1E008CC55E /* Channel+Channels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 642729BD2046CA1E008CC55E /* Channel+Channels.swift */; };
+		642729BF2046DF1B008CC55E /* Channel+Channels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 642729BD2046CA1E008CC55E /* Channel+Channels.swift */; };
+		642729C02046DF1B008CC55E /* Channel+Channels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 642729BD2046CA1E008CC55E /* Channel+Channels.swift */; };
+		642729C12046DF1C008CC55E /* Channel+Channels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 642729BD2046CA1E008CC55E /* Channel+Channels.swift */; };
+		642729C22046DF1C008CC55E /* Channel+Channels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 642729BD2046CA1E008CC55E /* Channel+Channels.swift */; };
+		642AC8632047143000CD66ED /* Subject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 642AC8622047143000CD66ED /* Subject.swift */; };
+		642AC865204714C700CD66ED /* Subject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 642AC8622047143000CD66ED /* Subject.swift */; };
+		642AC866204714C700CD66ED /* Subject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 642AC8622047143000CD66ED /* Subject.swift */; };
+		642AC867204714C700CD66ED /* Subject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 642AC8622047143000CD66ED /* Subject.swift */; };
+		642AC868204714C800CD66ED /* Subject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 642AC8622047143000CD66ED /* Subject.swift */; };
 		6499869520458B500042EE10 /* Channel+Filters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6499869420458B500042EE10 /* Channel+Filters.swift */; };
 		6499869620458C0C0042EE10 /* Channel+Filters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6499869420458B500042EE10 /* Channel+Filters.swift */; };
 		6499869720458C0D0042EE10 /* Channel+Filters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6499869420458B500042EE10 /* Channel+Filters.swift */; };
@@ -109,6 +119,8 @@
 		52D6D9E21BEFFF6E002C0205 /* Hydra.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Hydra.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		52D6D9F01BEFFFBE002C0205 /* Hydra.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Hydra.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		52D6DA0F1BF000BD002C0205 /* Hydra.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Hydra.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		642729BD2046CA1E008CC55E /* Channel+Channels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Channel+Channels.swift"; sourceTree = "<group>"; };
+		642AC8622047143000CD66ED /* Subject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Subject.swift; sourceTree = "<group>"; };
 		6499869420458B500042EE10 /* Channel+Filters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Channel+Filters.swift"; sourceTree = "<group>"; };
 		6499869A20458E690042EE10 /* Dispatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dispatch.swift; sourceTree = "<group>"; };
 		649986A02045A9940042EE10 /* OptionalProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalProtocol.swift; sourceTree = "<group>"; };
@@ -233,20 +245,46 @@
 			path = Configs;
 			sourceTree = "<group>";
 		};
-		64E9787A2043F49900776F9A /* Hydra */ = {
+		642AC8602047140900CD66ED /* Channel */ = {
 			isa = PBXGroup;
 			children = (
-				64E978A92043F4FA00776F9A /* Event.swift */,
 				64E978AF2043F66D00776F9A /* Channel.swift */,
 				64E9693D2044AD3900AFBA01 /* Channel+Makers.swift */,
 				64E969492044B89300AFBA01 /* Channel+Transforms.swift */,
 				6499869420458B500042EE10 /* Channel+Filters.swift */,
+				642729BD2046CA1E008CC55E /* Channel+Channels.swift */,
+				64E978A92043F4FA00776F9A /* Event.swift */,
 				64E978B52043F69900776F9A /* Subscriber.swift */,
 				64E978BB2043F6C900776F9A /* Disposable.swift */,
+			);
+			path = Channel;
+			sourceTree = "<group>";
+		};
+		642AC8612047141C00CD66ED /* Shared */ = {
+			isa = PBXGroup;
+			children = (
 				64E978C12043F91A00776F9A /* Mutex.swift */,
 				64E969432044B29000AFBA01 /* Repeat.swift */,
 				6499869A20458E690042EE10 /* Dispatch.swift */,
 				649986A02045A9940042EE10 /* OptionalProtocol.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		642AC8642047143300CD66ED /* Subject */ = {
+			isa = PBXGroup;
+			children = (
+				642AC8622047143000CD66ED /* Subject.swift */,
+			);
+			path = Subject;
+			sourceTree = "<group>";
+		};
+		64E9787A2043F49900776F9A /* Hydra */ = {
+			isa = PBXGroup;
+			children = (
+				642AC8602047140900CD66ED /* Channel */,
+				642AC8612047141C00CD66ED /* Shared */,
+				642AC8642047143300CD66ED /* Subject */,
 			);
 			path = Hydra;
 			sourceTree = "<group>";
@@ -614,8 +652,10 @@
 			files = (
 				64E969442044B29100AFBA01 /* Repeat.swift in Sources */,
 				64E978AA2043F4FA00776F9A /* Event.swift in Sources */,
+				642AC8632047143000CD66ED /* Subject.swift in Sources */,
 				64E9694A2044B89300AFBA01 /* Channel+Transforms.swift in Sources */,
 				64E978B02043F66D00776F9A /* Channel.swift in Sources */,
+				642729BE2046CA1E008CC55E /* Channel+Channels.swift in Sources */,
 				64E978BC2043F6C900776F9A /* Disposable.swift in Sources */,
 				6499869520458B500042EE10 /* Channel+Filters.swift in Sources */,
 				64E9693E2044AD3900AFBA01 /* Channel+Makers.swift in Sources */,
@@ -641,8 +681,10 @@
 			files = (
 				64E969462044B29100AFBA01 /* Repeat.swift in Sources */,
 				64E978AC2043F4FA00776F9A /* Event.swift in Sources */,
+				642AC866204714C700CD66ED /* Subject.swift in Sources */,
 				64E9694C2044B89300AFBA01 /* Channel+Transforms.swift in Sources */,
 				64E978B22043F66D00776F9A /* Channel.swift in Sources */,
+				642729C02046DF1B008CC55E /* Channel+Channels.swift in Sources */,
 				64E978BE2043F6C900776F9A /* Disposable.swift in Sources */,
 				6499869720458C0D0042EE10 /* Channel+Filters.swift in Sources */,
 				64E969402044AD3900AFBA01 /* Channel+Makers.swift in Sources */,
@@ -660,8 +702,10 @@
 			files = (
 				64E969472044B29100AFBA01 /* Repeat.swift in Sources */,
 				64E978AD2043F4FA00776F9A /* Event.swift in Sources */,
+				642AC867204714C700CD66ED /* Subject.swift in Sources */,
 				64E9694D2044B89300AFBA01 /* Channel+Transforms.swift in Sources */,
 				64E978B32043F66D00776F9A /* Channel.swift in Sources */,
+				642729C12046DF1C008CC55E /* Channel+Channels.swift in Sources */,
 				64E978BF2043F6C900776F9A /* Disposable.swift in Sources */,
 				6499869820458C0D0042EE10 /* Channel+Filters.swift in Sources */,
 				64E969412044AD3900AFBA01 /* Channel+Makers.swift in Sources */,
@@ -679,8 +723,10 @@
 			files = (
 				64E969452044B29100AFBA01 /* Repeat.swift in Sources */,
 				64E978AB2043F4FA00776F9A /* Event.swift in Sources */,
+				642AC865204714C700CD66ED /* Subject.swift in Sources */,
 				64E9694B2044B89300AFBA01 /* Channel+Transforms.swift in Sources */,
 				64E978B12043F66D00776F9A /* Channel.swift in Sources */,
+				642729BF2046DF1B008CC55E /* Channel+Channels.swift in Sources */,
 				64E978BD2043F6C900776F9A /* Disposable.swift in Sources */,
 				6499869620458C0C0042EE10 /* Channel+Filters.swift in Sources */,
 				64E9693F2044AD3900AFBA01 /* Channel+Makers.swift in Sources */,
@@ -697,12 +743,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				64E9789C2043F4E600776F9A /* ViewController.swift in Sources */,
+				642AC868204714C800CD66ED /* Subject.swift in Sources */,
 				6499869920458C0E0042EE10 /* Channel+Filters.swift in Sources */,
 				64E978C02043F6C900776F9A /* Disposable.swift in Sources */,
 				64E978B42043F66D00776F9A /* Channel.swift in Sources */,
 				64E978BA2043F69900776F9A /* Subscriber.swift in Sources */,
 				64E969482044B29100AFBA01 /* Repeat.swift in Sources */,
 				649986A52045A9980042EE10 /* OptionalProtocol.swift in Sources */,
+				642729C22046DF1C008CC55E /* Channel+Channels.swift in Sources */,
 				64E9694E2044B89300AFBA01 /* Channel+Transforms.swift in Sources */,
 				64E969422044AD3900AFBA01 /* Channel+Makers.swift in Sources */,
 				64E978C62043F91A00776F9A /* Mutex.swift in Sources */,

@@ -9,8 +9,10 @@
 import Foundation
 import Darwin
 
+/// Mutex is a wrapper around pthread_mutex to keep the atomicity of a variable.
 public final class Mutex {
 	
+	/// Type of mutex behaviour.
 	public enum Behaviour {
 		case `default`
 		case recursive

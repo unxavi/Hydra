@@ -14,46 +14,45 @@ public enum Errors: Error {
 
 class ViewController: UIViewController {
 	
-	var signal: Channel<Int,NoError>?
-	var s1: DisposableProtocol?
-	var signalDispose: DisposableProtocol?
-	var t: Repeat?
+	var channel_1: Channel<Int,NoError>?
+	var channel_2: Channel<Int,NoError>?
+
+	var timer_1 : Repeat?
+	var timer_2 : Repeat?
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		// Do any additional setup after loading the view, typically from a nib.
-		
-		self.signal = Channel<Int,NoError>.every(interval: .seconds(2), generator: { iteration in
-			return iteration
-		})
-		
-		self.signalDispose = self.signal?.subscribe({ event in
-			print("s1 ---> \(event)")
-		})
-		
-		self.t = Repeat.once(after: .seconds(10)) { _ in
-			self.signalDispose?.dispose()
-		}
-		
-		/*self.signal = Channel<Int,NoError>({ producer in
-			
-			self.t = Repeat.every(.seconds(5), { _ in
-				let random = Int(arc4random_uniform(100))
-				producer.send(.next(random))
+		var count_1: Int = 0
+		var count_2: Int = 0
+	
+		self.channel_1 = Channel({ producer in
+			self.timer_1 = Repeat.every(.seconds(1), { _ in
+				count_1 += 1
+				producer.send(value: count_1)
+				if count_1 == 5 {
+					producer.complete()
+					self.timer_1?.pause()
+				}
 			})
-			
-			return Disposable.onDispose {
-				self.t?.pause()
-			}
+			return Disposable.dontCare
 		})
 		
-		self.signalDispose = self.signal?.subscribe({ event in
-			print("s1 ---> \(event)")
+		self.channel_2 = Channel({ producer in
+			self.timer_2 = Repeat.every(.seconds(1), { _ in
+				count_2 += 1
+				producer.send(value: count_2)
+				if count_2 == 5 {
+					producer.complete()
+					self.timer_2?.pause()
+				}
+			})
+			return Disposable.dontCare
 		})
 		
-		DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(13)) {
-			self.signalDispose?.dispose()
-		}*/
+		self.channel_1!.concat(to: self.channel_2!).subscribe({ event in
+			print("\(event)")
+		})
 		
 	}
 
