@@ -40,7 +40,7 @@ public class Subject<V, E: Swift.Error>: SubjectProtocol {
 	///
 	/// - Parameter callback: callback to call on new event
 	/// - Returns: disposable used to dismiss the watcher
-	public func subscribe(_ callback: @escaping ((Event<V, E>) -> (Void))) -> DisposableProtocol {
+	public func subscribe(_ callback: @escaping Subscriber<V, E>) -> DisposableProtocol {
 		return self.lock.sync {
 			var (next,overflow) = self.nextTokenID.addingReportingOverflow(1) // just to be safe
 			if overflow { // reset the observer counter
