@@ -14,7 +14,9 @@ public protocol PropertyProtocol {
 	var value: PropertyValue { get }
 }
 
-public class Property<V>: PropertyProtocol, SubjectProtocol {
+public class Property<V>: PropertyProtocol, SubjectProtocol, BindingProtocol {
+	public typealias BindedValue = V
+	
 	public typealias Error = NoError
 	public typealias PropertyValue = V
 	public typealias Value = V
@@ -64,11 +66,12 @@ public class Property<V>: PropertyProtocol, SubjectProtocol {
 		}
 	}
 	
+	
 	/// Add a new subscriber of the property's change events.
 	///
 	/// - Parameter callback: callback to call
 	/// - Returns: disposable, used to remove callback when you are not interested anymore in changes.
-	public func subscribe(_ callback: @escaping ((Event<V, NoError>) -> (Void))) -> DisposableProtocol {
+	public func subscribe(_ callback: @escaping Subscriber<V, NoError>) -> DisposableProtocol {
 		// In fact this is a modification of the standard behaviour. We want just to add passed callback
 		// as a new subscriber of the inner's `subject` variable used to dispatch event to multiple subscribers.
 		let disposable = self.subject.start(with: self.value).subscribe(callback)
@@ -85,5 +88,12 @@ public class Property<V>: PropertyProtocol, SubjectProtocol {
 		self.subject.send(event) // ...dispastch it to the observers of the subject
 	}
 	
+	
+	public func bind(channel: Channel<Property<V>.BindedValue, NoError>) -> DisposableProtocol {
+		let destroyBindEvent = self.subject.disposable.deallocateChannel
+		return channel.until(filter: .any, channel: destroyBindEvent).subscribe(next: { [weak self] newValue in
+			self?.send(value: newValue)
+		})
+	}
 	
 }

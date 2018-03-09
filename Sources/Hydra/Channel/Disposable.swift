@@ -104,6 +104,11 @@ public final class Disposable: DisposableProtocol {
 /// Both dispose and insertion of a new disposable into the bag is thread safe.
 public class DisposableBag: DisposableProtocol {
 	
+	/// This is created when you call `.deallocateChannel` for this bag.
+	/// It allows you to get notified by a `.complete` event from the returned
+	/// channel when the bag gets disposed.
+	private var disposeSubject: ReplaySubject<Void, NoError>?
+	
 	/// Is bag disposed yet
 	public var disposed: Bool = false
 	
@@ -111,7 +116,7 @@ public class DisposableBag: DisposableProtocol {
 	private var list: [DisposableProtocol]
 	
 	/// Lock mutex
-	private var lock: Mutex = Mutex()
+	fileprivate var lock: Mutex = Mutex()
 	
 	/// Initialize with a list of disposable.
 	///
@@ -156,4 +161,22 @@ public class DisposableBag: DisposableProtocol {
 		}
 	}
 	
+	/// By calling this variable a non failable channel is returned
+	/// which fires `.complete` event when the bag gets deallocated.
+	public var deallocateChannel: Channel<Void,NoError> {
+		self.lock.sync {
+			if self.disposeSubject == nil { // create channel if needed
+				self.disposeSubject = ReplaySubject(size: 1)
+			}
+		}
+		// Return channel which will dispatch a complete event on bag's `deinit`.
+		return self.disposeSubject!.asChannel()
+	}
+	
+	deinit {
+		// fire a complete event if a `deallocateChannel` was created.
+		self.disposeSubject?.complete()
+	}
 }
+
+

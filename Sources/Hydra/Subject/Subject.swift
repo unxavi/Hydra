@@ -33,6 +33,8 @@ public class Subject<V, E: Swift.Error>: SubjectProtocol {
 	
 	/// Thread safe support for dispatching events
 	private var lock: Mutex = Mutex()
+	
+	public var disposable: DisposableBag = DisposableBag()
 
 	/// Allows you to attach a new subscriber.
 	/// It overrides the default behaviour of the SubscriberProtocol in order to allows

@@ -20,11 +20,28 @@ class ViewController: UIViewController {
 	var timer_1 : Repeater?
 	var timer_2 : Repeater?
 
+	var property_1: Property<Int> = Property(5)
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		// Do any additional setup after loading the view, typically from a nib.
+	
 		var count_1: Int = 0
 		var count_2: Int = 0
+		
+		self.channel_1 = Channel({ producer in
+			self.timer_1 = Repeater.every(.seconds(1), { _ in
+				count_1 += 1
+				producer.send(value: count_1)
+			})
+			return Disposable.dontCare
+		})
+		
+		self.channel_1?.exec(in: .main).subscribe({ event in
+			print("Is main thread? \(Thread.isMainThread): \(event)")
+		})
+		
+		return
+		// Do any additional setup after loading the view, typically from a nib.
 	
 		self.channel_1 = Channel({ producer in
 			self.timer_1 = Repeater.every(.seconds(1), { _ in
