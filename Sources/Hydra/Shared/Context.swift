@@ -20,7 +20,7 @@ public enum Context {
 	case background
 	case priority(_: ContextPriority)
 	
-	private var queue: DispatchQueue? {
+	public var queue: DispatchQueue? {
 		switch self {
 		case .main:				return DispatchQueue.main
 		case .inline:			return nil
@@ -29,6 +29,9 @@ public enum Context {
 		}
 	}
 	
+	/// Execute given block in specified context.
+	///
+	/// - Parameter block: block to execute
 	public func execute(_ block: @escaping () -> Void) {
 		guard let q = self.queue else { // inline, same thread of the caller
 			block()
@@ -38,7 +41,7 @@ public enum Context {
 			block()
 		}
 	}
-
+	
 }
 
 /// Context priorioty

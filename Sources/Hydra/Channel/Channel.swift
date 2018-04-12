@@ -11,6 +11,9 @@ import Foundation
 /// Used to mark a `Channel` as not failable.
 public enum NoError: Swift.Error { }
 
+/// Safe Channel is just a typealias to define a non-failable channel.
+public typealias SafeChannel<Value> = Channel<Value, NoError>
+
 /// `ChannelProtocol` represent a conformance to a single-input/single-output data stream.
 public protocol ChannelProtocol {
 	associatedtype Value
@@ -69,7 +72,7 @@ public extension ChannelProtocol {
 	
 }
 
-public struct Channel<V, E: Swift.Error>: ChannelProtocol {
+public class Channel<V, E: Swift.Error>: ChannelProtocol {
 	public typealias Value = V
 	public typealias Error = E
 
